@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Record Symptoms</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <h2>Record Your Symptoms</h2>
+        <p class="text-muted">Please rate your symptoms from 0 (none) to 6 (severe)</p>
+
+        <form th:action="@{/athlete/symptoms}" method="post">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Symptom</th>
+                        <th>Severity Level</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="type : ${symptomTypes}">
+                        <td>
+                            <label th:text="${#strings.toLowerCase(type.name()).replace('_', ' ')}">
+                                Symptom Name
+                            </label>
+                            <input type="hidden" name="type" th:value="${type}"/>
+                        </td>
+                        <td>
+                            <select class="form-select" name="severityScore">
+                                <option value="0">No Pain (0)</option>
+                                <option value="1">Very Mild (1)</option>
+                                <option value="2">Mild (2)</option>
+                                <option value="3">Moderate (3)</option>
+                                <option value="4">Severe (4)</option>
+                                <option value="5">Very Severe (5)</option>
+                                <option value="6">Extreme (6)</option>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="mt-3">
+                <button type="submit" class="btn btn-primary">Submit Symptoms</button>
+                <a th:href="@{/athlete/summary}" class="btn btn-outline-secondary">Back to Summary</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Athletes List</title>
+</head>
+<body>
+    <div th:replace="~{layout/main :: layout}">
+        <div th:fragment="content">
+            <div class="row mb-4">
+                <div class="col">
+                    <h2>Athletes Overview</h2>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">All Athletes</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="athlete : ${athletes}">
+                                    <td th:text="${athlete.username}">Athlete Name</td>
+                                    <td>
+                                        <span th:if="${athlete.severityRating.name() == 'VERY_DIFFERENT'}" 
+                                              class="badge bg-danger">High Risk</span>
+                                        <span th:if="${athlete.severityRating.name() == 'UNSURE'}" 
+                                              class="badge bg-warning">Monitor</span>
+                                        <span th:if="${athlete.severityRating.name() == 'NO_DIFFERENCE'}" 
+                                              class="badge bg-success">Stable</span>
+                                    </td>
+                                    <td>
+                                        <a th:href="@{/coach/athlete/{id}/summary(id=${athlete.id})}" 
+                                           class="btn btn-sm btn-primary">View Details</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

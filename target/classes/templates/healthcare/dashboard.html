@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/main :: html(
+        ~{::title},
+        ~{::#content}
+      )}">
+<head>
+    <title>Healthcare Dashboard</title>
+</head>
+<body>
+    <div id="content">
+        <h2>Healthcare Professional Dashboard</h2>
+
+        <!-- Risky Athletes Section -->
+        <div class="card mb-4" th:if="${!riskyAthletes.empty}">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0">⚠️ Athletes Requiring Immediate Attention</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 mb-3" th:each="athlete : ${riskyAthletes}">
+                        <div class="card h-100 border-danger">
+                            <div class="card-body">
+                                <h5 class="card-title" th:text="${athlete.username}">Athlete Name</h5>
+                                <p class="card-text text-danger">Severity: Very Different</p>
+                                <a th:href="@{/healthcare/athlete/{id}(id=${athlete.id})}" 
+                                   class="btn btn-danger">Review Urgently</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- All Athletes Section -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">All Athletes</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Athlete</th>
+                                <th>Status</th>
+                                <th>Last Updated</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="athlete : ${allAthletes}">
+                                <td th:text="${athlete.username}">Athlete Name</td>
+                                <td>
+                                    <span class="badge" 
+                                          th:classappend="${'bg-' + 
+                                          (athlete.severityRating == T(com.concussion.service.SeverityRating).VERY_DIFFERENT ? 'danger' :
+                                           athlete.severityRating == T(com.concussion.service.SeverityRating).UNSURE ? 'warning' : 'success')}"
+                                          th:text="${athlete.severityRating}">
+                                        Status
+                                    </span>
+                                </td>
+                                <td th:text="${athlete.lastUpdated}">2024-03-20</td>
+                                <td>
+                                    <a th:href="@{/healthcare/athlete/{id}(id=${athlete.id})}" 
+                                       class="btn btn-sm btn-primary">View Details</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
